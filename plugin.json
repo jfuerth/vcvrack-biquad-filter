@@ -1,0 +1,25 @@
+{
+  "slug": "BiquadFilter",
+  "name": "BiquadFilter",
+  "version": "2.0.0",
+  "license": "BSD-3-Clause",
+  "brand": "BiquadFilter",
+  "author": "Jonathan Fuerth",
+  "authorEmail": "",
+  "authorUrl": "",
+  "pluginUrl": "",
+  "manualUrl": "",
+  "sourceUrl": "",
+  "donateUrl": "",
+  "changelogUrl": "",
+  "modules": [
+    {
+      "slug": "dbq-basic",
+      "name": "dbq-basic",
+      "description": "Digital Biquad Filter with basic parameters",
+      "tags": [
+        "polyphonic", "filter"
+      ]
+    }
+  ]
+}
