@@ -1,36 +1,36 @@
 #include "plugin.hpp"
 
 struct DbqFilterState {
-	float x1 = 0.f, x2 = 0.f, y1 = 0.f, y2 = 0.f;
+	float x1 = 0.F, x2 = 0.F, y1 = 0.F, y2 = 0.F;
 };
 
 struct Dbq_basic : Module {
-	enum ParamId {
+	enum ParamId : std::uint8_t {
 		A1_PARAM,
 		A2_PARAM,
 		B1_PARAM,
 		B2_PARAM,
 		PARAMS_LEN
 	};
-	enum InputId {
+	enum InputId : std::uint8_t {
 		AUDIOIN_INPUT,
 		INPUTS_LEN
 	};
-	enum OutputId {
+	enum OutputId : std::uint8_t {
 		AUDIOOUT_OUTPUT,
 		OUTPUTS_LEN
 	};
-	enum LightId {
+	enum LightId : std::uint8_t {
 		LIGHTS_LEN
 	};
 
 
 	Dbq_basic() {
 		config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
-		configParam(A1_PARAM, -2.f, 2.f, 1.f, "a1");
-		configParam(A2_PARAM, -2.f, 2.f, 0.f, "a2");
-		configParam(B1_PARAM, -2.f, 2.f, 0.f, "b1");
-		configParam(B2_PARAM, -1.f, 1.f, 0.f, "b2");
+		configParam(A1_PARAM, -2.F, 2.F, 1.F, "a1");
+		configParam(A2_PARAM, -2.F, 2.F, 0.F, "a2");
+		configParam(B1_PARAM, -2.F, 2.F, 0.F, "b1");
+		configParam(B2_PARAM, -1.F, 1.F, 0.F, "b2");
 		configInput(AUDIOIN_INPUT, "Audio");
 		configOutput(AUDIOOUT_OUTPUT, "Filtered Audio");
 	}
@@ -46,22 +46,22 @@ struct Dbq_basic : Module {
 			float b2 = getParam(B2_PARAM).getValue();
 
 			// Compute output sample
-			float output = /* a0 * */ input + a1 * fs.x1 + a2 * fs.x2 - b1 * fs.y1 - b2 * fs.y2;
-			output = clamp(output, -11.7f, 11.7f);
+			float output = /* a0 * */ input + (a1 * fs.x1) + (a2 * fs.x2) - (b1 * fs.y1) - (b2 * fs.y2);
+			output = clamp(output, -11.7F, 11.7F);
 
 			// Shift state variables if filter is still stable
-			if (isfinite(output)) {
+			if (std::isfinite(output)) {
 				fs.x2 = fs.x1;
 				fs.x1 = input;
 				fs.y2 = fs.y1;
 				fs.y1 = output;
 			} else {
 				// TODO blink unstable LED
-				output = 0.f;
-				fs.x2 = 0.f;
-				fs.x1 = 0.f;
-				fs.y2 = 0.f;
-				fs.y1 = 0.f;
+				output = 0.F;
+				fs.x2 = 0.F;
+				fs.x1 = 0.F;
+				fs.y2 = 0.F;
+				fs.y1 = 0.F;
 			}
 
 			getOutput(AUDIOOUT_OUTPUT).setVoltage(output, chan);
@@ -80,9 +80,9 @@ struct Dbq_basicWidget : ModuleWidget {
 		setPanel(createPanel(asset::plugin(pluginInstance, "res/dbq-basic.svg")));
 
 		addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, 0)));
-		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
+		addChild(createWidget<ScrewSilver>(Vec(box.size.x - (2 * RACK_GRID_WIDTH), 0)));
 		addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
-		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
+		addChild(createWidget<ScrewSilver>(Vec(box.size.x - (2 * RACK_GRID_WIDTH), RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
 		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(12.458, 22.28)), module, Dbq_basic::A1_PARAM));
 		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(12.458, 38.985)), module, Dbq_basic::A2_PARAM));
