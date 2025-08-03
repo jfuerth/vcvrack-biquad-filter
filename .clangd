@@ -1,0 +1,28 @@
+CompileFlags:
+  Add:
+    - "-std=c++11"
+    - "-Wall"
+    - "-Wextra"
+    - "-Wno-unused-parameter"
+  Remove:
+    - "-march=*"
+    - "-funsafe-math-optimizations"
+
+Index:
+  Background: Build
+
+Diagnostics:
+  ClangTidy:
+    Add:
+      - "performance-*"
+      - "readability-*"
+      - "modernize-*"
+    Remove:
+      - "modernize-use-trailing-return-type"
+      - "readability-magic-numbers"
+      - "readability-identifier-length"
+
+InlayHints:
+  Enabled: true
+  ParameterNames: true
+  DeducedTypes: true

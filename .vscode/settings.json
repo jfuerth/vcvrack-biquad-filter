@@ -1,3 +1,21 @@
 {
-    "makefile.configureOnOpen": true
+    "makefile.configureOnOpen": true,
+    "clangd.arguments": [
+        "--compile-commands-dir=${workspaceFolder}",
+        "--header-insertion=never",
+        "--clang-tidy"
+    ],
+    "clangd.onConfigChanged": "restart",
+    "clangd.fallbackFlags": [
+        "-std=c++11",
+        "-I${workspaceFolder}/../../include",
+        "-I${workspaceFolder}/../../dep/include"
+    ],
+    "editor.semanticHighlighting.enabled": true,
+    "C_Cpp.intelliSenseEngine": "disabled",
+    "files.associations": {
+        "*.hpp": "cpp",
+        "*.cpp": "cpp",
+        "*.h": "c"
+    }
 }
